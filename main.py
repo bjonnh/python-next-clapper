@@ -1,4 +1,4 @@
-# Print out realtime audio volume as ascii bars
+# Inspired from: https://stackoverflow.com/questions/40138031/how-to-read-realtime-microphone-audio-volume-in-python-and-ffmpeg-or-similar
 
 import sounddevice as sd
 import numpy as np
@@ -10,7 +10,7 @@ level = 50
 delay_between_clicks = 1
 last_click = time.time()
 
-def print_sound(indata, frames, timex, status):
+def do_sound(indata, frames, timex, status):
     global last_click
     volume_norm = np.linalg.norm(indata)*10
     #print("|" * int(volume_norm))
@@ -19,7 +19,6 @@ def print_sound(indata, frames, timex, status):
         os.system("xdotool key Next")
         last_click = time.time()
 
-stream =  sd.InputStream(callback=print_sound)
+stream =  sd.InputStream(callback=do_sound)
 with stream:
     sd.sleep(duration * 1000)
-
